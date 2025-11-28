@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Increíble: los perezosos pueden aguantar la respiración más tiempo que los delfines</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem auto;
+      max-width: 1200px;
+      line-height: 1.6;
+      background: #fafafa;
+      color: #333;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    h1 {
+      margin: 0;
+      text-align: center;
+    }
+
+    .play-btn {
+    width: 40px;
+    border-radius: 50%;
+    border: none;
+    background: #0077ff;
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 2.1em;
+    text-align: center;
+    transition: background-color 0.2s;
+    }
+
+    .play-btn:hover {
+      background: #0059cc;
+    }
+
+    .columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .col {
+      background: #fff;
+      border-radius: 10px;
+      padding: 1rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    audio {
+      width: 100%;
+      margin-top: 1rem;
+    }
+
+    img {
+      max-width: 100%;
+      border-radius: 10px;
+    }
+
+    .sentence { cursor: pointer; transition: background 0.2s; }
+    .highlight { background-color: #fff176; } /* цвет подсветки */
+  </style>
+</head>
+<body>
+
+  <!-- Заголовок и кнопка воспроизведения -->
+  <div class="header">
+    <h1>Increíble: los perezosos pueden aguantar la respiración más tiempo que los delfines <span id="titleAudioBtn" class="play-btn">▶</span></h1>
+  </div>
+
+  <!-- Колонки: текст / перевод / картинка -->
+  <div class="columns">
+    <!-- Текст с плеером -->
+    <div class="col">
+      <div id="textCol"><p>Hoy traemos un dato curioso de la naturaleza. Los perezosos pueden aguantar la respiración más tiempo que los delfines. Muchas personas piensan que el delfín es el gran campeón del aire. Es rápido, inteligente y vive en el mar. Pero el perezoso gana en esta prueba tan especial.</p>
+<p>El perezoso se mueve despacio y ahorra energía. Cuando está bajo el agua, baja mucho el ritmo del corazón. Así usa menos oxígeno y puede estar sin respirar más tiempo. Algunos perezosos llegan hasta 40 minutos sin tomar aire. En cambio, muchos delfines solo aguantan entre 10 y 15 minutos.</p>
+<p>Los delfines suben a la superficie para respirar por un agujero en la cabeza. Necesitan salir a menudo para vivir bien en el océano. El perezoso no vive en el agua, pero puede nadar cuando lo necesita. Este dato sorprende en internet y nos enseña que cada animal tiene su truco. Cuidemos el mar y la selva, porque ambos necesitan nuestra atención.</p></div>
+      <audio controls>
+        <source src="text-audio.mp3" type="audio/mpeg" />
+      </audio>
+    </div>
+
+    <!-- Перевод -->
+    <div class="col" id="translationCol">
+      <p><p>Сегодня у нас любопытный факт о природе. Ленивцы могут задерживать дыхание дольше, чем дельфины. Многие люди думают, что дельфин — настоящий чемпион, когда дело касается дыхания. Он быстрый, умный и живёт в море. Но в этом особенном испытании побеждает ленивец.</p>
+<p>Ленивец движется медленно и экономит энергию. Когда он находится под водой, его сердечный ритм сильно замедляется. Так он расходует меньше кислорода и может дольше находиться без дыхания. Некоторые ленивцы могут обходиться без воздуха до 40 минут. А вот многие дельфины выдерживают лишь от 10 до 15 минут.</p>
+<p>Дельфины всплывают на поверхность, чтобы дышать через дыхательное отверстие на голове. Им нужно часто подниматься на поверхность, чтобы нормально жить в океане. Ленивец не живёт в воде, но может плавать, когда это необходимо. Этот факт удивляет в интернете и показывает нам, что у каждого животного есть свой секрет. Берегите море и джунгли, потому что оба нуждаются в нашем внимании.</p></p>
+    </div>
+
+    <!-- Картинка -->
+    <div class="col">
+      <img src="image.png"  alt="Image" />
+      <p><strong>Невероятно: ленивцы могут задерживать дыхание дольше, чем дельфины.</strong></p>
+    </div>
+  </div>
+
+  <script>
+    const titleBtn = document.getElementById('titleAudioBtn');
+    const titleAudio = new Audio('title-audio.mp3');
+
+    titleBtn.addEventListener('click', () => {
+      if (!titleAudio.paused) {
+        titleAudio.pause();
+        titleAudio.currentTime = 0;
+        titleBtn.textContent = '▶';
+      } else {
+        titleAudio.play();
+        titleBtn.textContent = '⏹';
+      }
+    });
+
+    titleAudio.addEventListener('ended', () => {
+      titleBtn.textContent = '▶';
+    });
+
+    // -----------------------------
+    // Подсветка предложений с сохранением абзацев
+    const textCol = document.getElementById('textCol');
+    const translationCol = document.getElementById('translationCol');
+
+    function wrapSentencesPreserveParagraphs(container) {
+    const paragraphs = container.textContent.split(/\n+/).filter(p => p.trim() !== '');
+    container.innerHTML = ''; // очищаем контейнер
+    let sentenceIndex = 0;
+
+    paragraphs.forEach(paragraph => {
+        const p = document.createElement('p');
+        const sentences = paragraph.split(/(?<=[.!?])\s+/);
+
+        sentences.forEach(sentence => {
+        const span = document.createElement('span');
+        span.className = 'sentence';
+        span.dataset.index = sentenceIndex;
+        span.textContent = sentence + ' ';
+        p.appendChild(span);
+        sentenceIndex++;
+        });
+
+        container.appendChild(p);
+    });
+    }
+
+    // Оборачиваем текст и перевод
+    wrapSentencesPreserveParagraphs(textCol);
+    wrapSentencesPreserveParagraphs(translationCol);
+
+    // Получаем все спаны
+    const textSpans = textCol.querySelectorAll('.sentence');
+    const translationSpans = translationCol.querySelectorAll('.sentence');
+
+    // Добавляем подсветку
+    textSpans.forEach(span => {
+    span.addEventListener('mouseenter', () => {
+        const i = span.dataset.index;
+        span.classList.add('highlight');
+        if (translationSpans[i]) translationSpans[i].classList.add('highlight');
+    });
+    span.addEventListener('mouseleave', () => {
+        const i = span.dataset.index;
+        span.classList.remove('highlight');
+        if (translationSpans[i]) translationSpans[i].classList.remove('highlight');
+    });
+    });
+
+    translationSpans.forEach(span => {
+    span.addEventListener('mouseenter', () => {
+        const i = span.dataset.index;
+        span.classList.add('highlight');
+        if (textSpans[i]) textSpans[i].classList.add('highlight');
+    });
+    span.addEventListener('mouseleave', () => {
+        const i = span.dataset.index;
+        span.classList.remove('highlight');
+        if (textSpans[i]) textSpans[i].classList.remove('highlight');
+    });
+    });
+
+  </script>
+
+</body>
+</html>

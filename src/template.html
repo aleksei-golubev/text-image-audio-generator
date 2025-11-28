@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{TITLE}}</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem auto;
+      max-width: 1200px;
+      line-height: 1.6;
+      background: #fafafa;
+      color: #333;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    h1 {
+      margin: 0;
+      text-align: center;
+    }
+
+    .play-btn {
+    width: 40px;
+    border-radius: 50%;
+    border: none;
+    background: #0077ff;
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 2.1em;
+    text-align: center;
+    transition: background-color 0.2s;
+    }
+
+    .play-btn:hover {
+      background: #0059cc;
+    }
+
+    .columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .col {
+      background: #fff;
+      border-radius: 10px;
+      padding: 1rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    audio {
+      width: 100%;
+      margin-top: 1rem;
+    }
+
+    img {
+      max-width: 100%;
+      border-radius: 10px;
+    }
+
+    .sentence { cursor: pointer; transition: background 0.2s; }
+    .highlight { background-color: #fff176; } /* цвет подсветки */
+  </style>
+</head>
+<body>
+
+  <!-- Заголовок и кнопка воспроизведения -->
+  <div class="header">
+    <h1>{{TITLE}} <span id="titleAudioBtn" class="play-btn">▶</span></h1>
+  </div>
+
+  <!-- Колонки: текст / перевод / картинка -->
+  <div class="columns">
+    <!-- Текст с плеером -->
+    <div class="col">
+      <div id="textCol">{{TEXT}}</div>
+      <audio controls>
+        <source src="text-audio.mp3" type="audio/mpeg" />
+      </audio>
+    </div>
+
+    <!-- Перевод -->
+    <div class="col" id="translationCol">
+      <p>{{TEXT_TRANSLATION}}</p>
+    </div>
+
+    <!-- Картинка -->
+    <div class="col">
+      <img src="image.png"  alt="Image" />
+      <p><strong>{{TITLE_TRANSLATION}}</strong></p>
+    </div>
+  </div>
+
+  <script>
+    const titleBtn = document.getElementById('titleAudioBtn');
+    const titleAudio = new Audio('title-audio.mp3');
+
+    titleBtn.addEventListener('click', () => {
+      if (!titleAudio.paused) {
+        titleAudio.pause();
+        titleAudio.currentTime = 0;
+        titleBtn.textContent = '▶';
+      } else {
+        titleAudio.play();
+        titleBtn.textContent = '⏹';
+      }
+    });
+
+    titleAudio.addEventListener('ended', () => {
+      titleBtn.textContent = '▶';
+    });
+
+    // -----------------------------
+    // Подсветка предложений с сохранением абзацев
+    const textCol = document.getElementById('textCol');
+    const translationCol = document.getElementById('translationCol');
+
+    function wrapSentencesPreserveParagraphs(container) {
+    const paragraphs = container.textContent.split(/\n+/).filter(p => p.trim() !== '');
+    container.innerHTML = ''; // очищаем контейнер
+    let sentenceIndex = 0;
+
+    paragraphs.forEach(paragraph => {
+        const p = document.createElement('p');
+        const sentences = paragraph.split(/(?<=[.!?])\s+/);
+
+        sentences.forEach(sentence => {
+        const span = document.createElement('span');
+        span.className = 'sentence';
+        span.dataset.index = sentenceIndex;
+        span.textContent = sentence + ' ';
+        p.appendChild(span);
+        sentenceIndex++;
+        });
+
+        container.appendChild(p);
+    });
+    }
+
+    // Оборачиваем текст и перевод
+    wrapSentencesPreserveParagraphs(textCol);
+    wrapSentencesPreserveParagraphs(translationCol);
+
+    // Получаем все спаны
+    const textSpans = textCol.querySelectorAll('.sentence');
+    const translationSpans = translationCol.querySelectorAll('.sentence');
+
+    // Добавляем подсветку
+    textSpans.forEach(span => {
+    span.addEventListener('mouseenter', () => {
+        const i = span.dataset.index;
+        span.classList.add('highlight');
+        if (translationSpans[i]) translationSpans[i].classList.add('highlight');
+    });
+    span.addEventListener('mouseleave', () => {
+        const i = span.dataset.index;
+        span.classList.remove('highlight');
+        if (translationSpans[i]) translationSpans[i].classList.remove('highlight');
+    });
+    });
+
+    translationSpans.forEach(span => {
+    span.addEventListener('mouseenter', () => {
+        const i = span.dataset.index;
+        span.classList.add('highlight');
+        if (textSpans[i]) textSpans[i].classList.add('highlight');
+    });
+    span.addEventListener('mouseleave', () => {
+        const i = span.dataset.index;
+        span.classList.remove('highlight');
+        if (textSpans[i]) textSpans[i].classList.remove('highlight');
+    });
+    });
+
+  </script>
+
+</body>
+</html>

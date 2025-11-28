@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Las vacas tienen mejores amigas y se estresan cuando las separan</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem auto;
+      max-width: 1200px;
+      line-height: 1.6;
+      background: #fafafa;
+      color: #333;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    h1 {
+      margin: 0;
+      text-align: center;
+    }
+
+    .play-btn {
+    width: 40px;
+    border-radius: 50%;
+    border: none;
+    background: #0077ff;
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 2.1em;
+    text-align: center;
+    transition: background-color 0.2s;
+    }
+
+    .play-btn:hover {
+      background: #0059cc;
+    }
+
+    .columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .col {
+      background: #fff;
+      border-radius: 10px;
+      padding: 1rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    audio {
+      width: 100%;
+      margin-top: 1rem;
+    }
+
+    img {
+      max-width: 100%;
+      border-radius: 10px;
+    }
+
+    .sentence { cursor: pointer; transition: background 0.2s; }
+    .highlight { background-color: #fff176; } /* цвет подсветки */
+  </style>
+</head>
+<body>
+
+  <!-- Заголовок и кнопка воспроизведения -->
+  <div class="header">
+    <h1>Las vacas tienen mejores amigas y se estresan cuando las separan <span id="titleAudioBtn" class="play-btn">▶</span></h1>
+  </div>
+
+  <!-- Колонки: текст / перевод / картинка -->
+  <div class="columns">
+    <!-- Текст с плеером -->
+    <div class="col">
+      <div id="textCol"><p>Mucha gente piensa que las vacas son animales simples. Pero las vacas tienen una vida social. Muchas vacas tienen una mejor amiga. Pasan mucho tiempo juntas en el campo. Se sienten más tranquilas cuando están con su amiga.</p>
+<p>Un estudio dice que las vacas se estresan cuando las separan de su amiga. Mugen más y caminan de un lado a otro. A veces comen menos y duermen peor. Su corazón late más rápido en esos momentos. Cuando vuelven a estar juntas, se calman de nuevo.</p>
+<p>Este dato es importante para el cuidado de los animales. En las granjas, es bueno mantener a las vacas con sus amigas. Así están más felices y dan mejor leche. También necesitan espacio, comida, agua y tiempo para descansar. Recordemos que las vacas sienten y tienen amigas, como nosotros.</p></div>
+      <audio controls>
+        <source src="text-audio.mp3" type="audio/mpeg" />
+      </audio>
+    </div>
+
+    <!-- Перевод -->
+    <div class="col" id="translationCol">
+      <p><p>Многие люди думают, что коровы — простые животные. Но у коров есть социальная жизнь. У многих коров есть лучшая подруга. Они проводят много времени вместе на пастбище. Им спокойнее, когда они со своей подругой.</p>
+<p>Исследование показывает, что коровы испытывают стресс, когда их разлучают с подругой. Они мычат больше и ходят туда-сюда. Иногда едят меньше и хуже спят. В эти моменты их сердце бьётся быстрее. Когда они снова вместе, они успокаиваются.</p>
+<p>Этот факт важен для ухода за животными. На фермах хорошо держать коров вместе с их подругами. Так они счастливее и дают лучшее молоко. Также им нужны пространство, еда, вода и время для отдыха. Будем помнить, что коровы чувствуют и у них есть подруги, как и у нас.</p></p>
+    </div>
+
+    <!-- Картинка -->
+    <div class="col">
+      <img src="image.png"  alt="Image" />
+      <p><strong>У коров есть лучшие подруги, и они испытывают стресс, когда их разлучают.</strong></p>
+    </div>
+  </div>
+
+  <script>
+    const titleBtn = document.getElementById('titleAudioBtn');
+    const titleAudio = new Audio('title-audio.mp3');
+
+    titleBtn.addEventListener('click', () => {
+      if (!titleAudio.paused) {
+        titleAudio.pause();
+        titleAudio.currentTime = 0;
+        titleBtn.textContent = '▶';
+      } else {
+        titleAudio.play();
+        titleBtn.textContent = '⏹';
+      }
+    });
+
+    titleAudio.addEventListener('ended', () => {
+      titleBtn.textContent = '▶';
+    });
+
+    // -----------------------------
+    // Подсветка предложений с сохранением абзацев
+    const textCol = document.getElementById('textCol');
+    const translationCol = document.getElementById('translationCol');
+
+    function wrapSentencesPreserveParagraphs(container) {
+    const paragraphs = container.textContent.split(/\n+/).filter(p => p.trim() !== '');
+    container.innerHTML = ''; // очищаем контейнер
+    let sentenceIndex = 0;
+
+    paragraphs.forEach(paragraph => {
+        const p = document.createElement('p');
+        const sentences = paragraph.split(/(?<=[.!?])\s+/);
+
+        sentences.forEach(sentence => {
+        const span = document.createElement('span');
+        span.className = 'sentence';
+        span.dataset.index = sentenceIndex;
+        span.textContent = sentence + ' ';
+        p.appendChild(span);
+        sentenceIndex++;
+        });
+
+        container.appendChild(p);
+    });
+    }
+
+    // Оборачиваем текст и перевод
+    wrapSentencesPreserveParagraphs(textCol);
+    wrapSentencesPreserveParagraphs(translationCol);
+
+    // Получаем все спаны
+    const textSpans = textCol.querySelectorAll('.sentence');
+    const translationSpans = translationCol.querySelectorAll('.sentence');
+
+    // Добавляем подсветку
+    textSpans.forEach(span => {
+    span.addEventListener('mouseenter', () => {
+        const i = span.dataset.index;
+        span.classList.add('highlight');
+        if (translationSpans[i]) translationSpans[i].classList.add('highlight');
+    });
+    span.addEventListener('mouseleave', () => {
+        const i = span.dataset.index;
+        span.classList.remove('highlight');
+        if (translationSpans[i]) translationSpans[i].classList.remove('highlight');
+    });
+    });
+
+    translationSpans.forEach(span => {
+    span.addEventListener('mouseenter', () => {
+        const i = span.dataset.index;
+        span.classList.add('highlight');
+        if (textSpans[i]) textSpans[i].classList.add('highlight');
+    });
+    span.addEventListener('mouseleave', () => {
+        const i = span.dataset.index;
+        span.classList.remove('highlight');
+        if (textSpans[i]) textSpans[i].classList.remove('highlight');
+    });
+    });
+
+  </script>
+
+</body>
+</html>

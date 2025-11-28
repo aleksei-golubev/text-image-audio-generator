@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>La caca del wombat es cuadrada y no rueda</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2rem auto;
+      max-width: 1200px;
+      line-height: 1.6;
+      background: #fafafa;
+      color: #333;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    h1 {
+      margin: 0;
+      text-align: center;
+    }
+
+    .play-btn {
+    width: 40px;
+    border-radius: 50%;
+    border: none;
+    background: #0077ff;
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 2.1em;
+    text-align: center;
+    transition: background-color 0.2s;
+    }
+
+    .play-btn:hover {
+      background: #0059cc;
+    }
+
+    .columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .col {
+      background: #fff;
+      border-radius: 10px;
+      padding: 1rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    audio {
+      width: 100%;
+      margin-top: 1rem;
+    }
+
+    img {
+      max-width: 100%;
+      border-radius: 10px;
+    }
+
+    .sentence { cursor: pointer; transition: background 0.2s; }
+    .highlight { background-color: #fff176; } /* цвет подсветки */
+  </style>
+</head>
+<body>
+
+  <!-- Заголовок и кнопка воспроизведения -->
+  <div class="header">
+    <h1>La caca del wombat es cuadrada y no rueda <span id="titleAudioBtn" class="play-btn">▶</span></h1>
+  </div>
+
+  <!-- Колонки: текст / перевод / картинка -->
+  <div class="columns">
+    <!-- Текст с плеером -->
+    <div class="col">
+      <div id="textCol"><p>El wombat es un animal de Australia. Parece un pequeño oso, pero es un marsupial. Tiene patas cortas y un cuerpo fuerte. Su caca es especial y tiene forma de cubo. Esta forma llama la atención de muchas personas.</p>
+<p>La caca en cubos no rueda. Así, el wombat puede dejarla en rocas y troncos. Sirve para marcar su territorio y mandar mensajes con olor. El cubo se queda en su lugar, incluso con viento o lluvia suave. Esto ayuda a otros wombats a encontrar señales claras.</p>
+<p>¿Cómo hace el cuerpo estos cubos? El intestino del wombat trabaja despacio y seca mucho los desechos. Las paredes del intestino aprietan con fuerza en partes diferentes. Así, la caca sale con bordes y con forma de cubo. Es un dato curioso de la naturaleza.</p></div>
+      <audio controls>
+        <source src="text-audio.mp3" type="audio/mpeg" />
+      </audio>
+    </div>
+
+    <!-- Перевод -->
+    <div class="col" id="translationCol">
+      <p><p>Вомбат — это животное из Австралии. Он похож на маленького медведя, но это сумчатое. У него короткие лапы и крепкое тело. Его помёт особенный и имеет форму куба. Эта форма привлекает внимание многих людей.</p>
+<p>Помёт в форме кубиков не катится. Поэтому вомбат может оставлять его на камнях и брёвнах. Он служит для маркировки территории и передачи запаховых сообщений. Кубик остаётся на месте, даже при ветре или лёгком дожде. Это помогает другим вомбатам находить чёткие сигналы.</p>
+<p>Как организм делает эти кубики? Кишечник вомбата работает медленно и сильно высушивает отходы. Стенки кишечника сильно сжимаются в разных местах. Так помёт выходит с гранями и в форме куба. Это любопытный факт природы.</p></p>
+    </div>
+
+    <!-- Картинка -->
+    <div class="col">
+      <img src="image.png"  alt="Image" />
+      <p><strong>Какашка вомбата квадратная и не катится.</strong></p>
+    </div>
+  </div>
+
+  <script>
+    const titleBtn = document.getElementById('titleAudioBtn');
+    const titleAudio = new Audio('title-audio.mp3');
+
+    titleBtn.addEventListener('click', () => {
+      if (!titleAudio.paused) {
+        titleAudio.pause();
+        titleAudio.currentTime = 0;
+        titleBtn.textContent = '▶';
+      } else {
+        titleAudio.play();
+        titleBtn.textContent = '⏹';
+      }
+    });
+
+    titleAudio.addEventListener('ended', () => {
+      titleBtn.textContent = '▶';
+    });
+
+    // -----------------------------
+    // Подсветка предложений с сохранением абзацев
+    const textCol = document.getElementById('textCol');
+    const translationCol = document.getElementById('translationCol');
+
+    function wrapSentencesPreserveParagraphs(container) {
+    const paragraphs = container.textContent.split(/\n+/).filter(p => p.trim() !== '');
+    container.innerHTML = ''; // очищаем контейнер
+    let sentenceIndex = 0;
+
+    paragraphs.forEach(paragraph => {
+        const p = document.createElement('p');
+        const sentences = paragraph.split(/(?<=[.!?])\s+/);
+
+        sentences.forEach(sentence => {
+        const span = document.createElement('span');
+        span.className = 'sentence';
+        span.dataset.index = sentenceIndex;
+        span.textContent = sentence + ' ';
+        p.appendChild(span);
+        sentenceIndex++;
+        });
+
+        container.appendChild(p);
+    });
+    }
+
+    // Оборачиваем текст и перевод
+    wrapSentencesPreserveParagraphs(textCol);
+    wrapSentencesPreserveParagraphs(translationCol);
+
+    // Получаем все спаны
+    const textSpans = textCol.querySelectorAll('.sentence');
+    const translationSpans = translationCol.querySelectorAll('.sentence');
+
+    // Добавляем подсветку
+    textSpans.forEach(span => {
+    span.addEventListener('mouseenter', () => {
+        const i = span.dataset.index;
+        span.classList.add('highlight');
+        if (translationSpans[i]) translationSpans[i].classList.add('highlight');
+    });
+    span.addEventListener('mouseleave', () => {
+        const i = span.dataset.index;
+        span.classList.remove('highlight');
+        if (translationSpans[i]) translationSpans[i].classList.remove('highlight');
+    });
+    });
+
+    translationSpans.forEach(span => {
+    span.addEventListener('mouseenter', () => {
+        const i = span.dataset.index;
+        span.classList.add('highlight');
+        if (textSpans[i]) textSpans[i].classList.add('highlight');
+    });
+    span.addEventListener('mouseleave', () => {
+        const i = span.dataset.index;
+        span.classList.remove('highlight');
+        if (textSpans[i]) textSpans[i].classList.remove('highlight');
+    });
+    });
+
+  </script>
+
+</body>
+</html>

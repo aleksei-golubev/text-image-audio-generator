@@ -4,11 +4,10 @@
   "description": "Text image audio generator",
   "main": "./src/index.mjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "generate-content": "node ./src/index.mjs",
     "generate-static": "node ./src/static.mjs"
   },
-  "author": "",
+  "author": "Aleksei Golubev",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^17.2.3",

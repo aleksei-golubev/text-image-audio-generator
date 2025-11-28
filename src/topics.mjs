@@ -1,3 +1,5 @@
+// Topics which are already generated are commented out to avoid repetition
+
 export const funFacts = [
   //"Honey never spoils; archaeologists have found edible honey in ancient Egyptian tombs.",
   //"Bananas are berries, but strawberries are not.",
@@ -6,17 +8,17 @@ export const funFacts = [
   //"The Eiffel Tower can grow taller by up to six inches during summer due to heat expansion.",
   //"A day on Venus is longer than a year on Venus.",
   //"Sharks existed before trees appeared on Earth.",
-  "Sloths can hold their breath longer than dolphins can.",
-  "Your stomach gets a new lining every few days to prevent it from digesting itself.",
-  "The fingerprints of a koala are so similar to humans’ that they can confuse crime scenes.",
-  "Wombat poop is cube-shaped to prevent it from rolling away.",
-  "There’s a species of jellyfish that can theoretically live forever.",
-  "Hot water freezes faster than cold water — this is called the Mpemba effect.",
-  "Cows have best friends and get stressed when separated from them.",
-  "The shortest war in history lasted 38 minutes between Britain and Zanzibar in 1896.",
-  "Butterflies taste with their feet.",
-  "Some metals, like gallium, can melt in your hand.",
-  "The longest hiccup spree lasted 68 years.",
-  "Cleopatra lived closer in time to the Moon landing than to the construction of the Great Pyramid.",
-  "The human nose can remember 50,000 different scents."
+  // "Sloths can hold their breath longer than dolphins can.",
+  // "Your stomach gets a new lining every few days to prevent it from digesting itself.",
+  // "The fingerprints of a koala are so similar to humans’ that they can confuse crime scenes.",
+  // "Wombat poop is cube-shaped to prevent it from rolling away.",
+  // "There’s a species of jellyfish that can theoretically live forever.",
+  // "Hot water freezes faster than cold water — this is called the Mpemba effect.",
+  // "Cows have best friends and get stressed when separated from them.",
+  // "The shortest war in history lasted 38 minutes between Britain and Zanzibar in 1896.",
+  // "Butterflies taste with their feet.",
+  // "Some metals, like gallium, can melt in your hand.",
+  // "The longest hiccup spree lasted 68 years.",
+  // "Cleopatra lived closer in time to the Moon landing than to the construction of the Great Pyramid.",
+  // "The human nose can remember 50,000 different scents."
 ];

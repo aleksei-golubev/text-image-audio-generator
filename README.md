@@ -24,10 +24,9 @@ This project generates engaging multilingual learning materials from fun facts. 
 │   ├── topics.mjs          # List of fun facts to process
 │   └── utils.mjs           # Utility functions (slug generation, timestamps)
 ├── output/                 # Generated content (HTML, audio, images)
-├── output-tests/           # Test output directory
 ├── package.json            # Project dependencies
 ├── .env                    # API keys configuration
-└── README.md              # This file
+└── README.md               # This file
 ```
 
 ## 🚀 Getting Started
